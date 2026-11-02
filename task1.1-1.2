@@ -1,0 +1,23 @@
+import numpy as np
+
+x = np.array([-0.135, 0.715, 1.565, 2.415, 3.265])
+y = np.array([-2.132, -2.113, -1.613, -0.842, 1.204])
+h = x[1] - x[0]
+
+diffs = np.zeros((5, 5))
+diffs[:, 0] = y
+for j in range(1, 5):
+    for i in range(5 - j):
+        diffs[i, j] = diffs[i+1, j-1] - diffs[i, j-1]
+
+dy0 = (1 / h) * (diffs[0, 1] - 0.5 * diffs[0, 2] + (1/3) * diffs[0, 3] - 0.25 * diffs[0, 4])
+ddy0 = (1 / h**2) * (diffs[0, 2] - diffs[0, 3] + (11/12) * diffs[0, 4])
+print(f"1.1. а) x = -0.135: f' = {dy0:.4f}, f'' = {ddy0:.4f}")
+
+dy_n = (1 / h) * (diffs[3, 1] + 0.5 * diffs[2, 2] + (1/3) * diffs[1, 3] + 0.25 * diffs[0, 4])
+ddy_n = (1 / h**2) * (diffs[2, 2] + diffs[1, 3] + (11/12) * diffs[0, 4])
+print(f"1.1. б) x = 3.1: f' = {dy_n:.4f}, f'' = {ddy_n:.4f}")
+
+dy_stirling = (1 / h) * (((diffs[1, 1] + diffs[2, 1]) / 2) - (1/6) * ((diffs[0, 3] + diffs[1, 3]) / 2))
+ddy_stirling = (1 / h**2) * (diffs[1, 2] - (1/12) * diffs[0, 4])
+print(f"1.2. Стірлінг (x = 1.565): f' = {dy_stirling:.4f}, f'' = {ddy_stirling:.4f}")
